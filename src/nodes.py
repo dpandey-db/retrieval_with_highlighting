@@ -2,7 +2,7 @@ from typing import Dict, Any, Union
 from .config import SLSConfig
 from langchain_core.runnables import RunnableLambda
 from .states import GraphState, StreamState
-from .prompts import chat_template, context_template, rephrase_template
+from .prompts import chat_template, context_template
 from .retrievers import format_documents
 from .utils import (
     format_generation_user,
