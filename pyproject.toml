@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "semantic_legislation_search"
+version = "0.0.1"
+description = "Semantic Legislation Search"
+authors = [
+    "Devanshu Pandey <devanshu.pandey@databricks.com>",
+    "Scott McKean <scott.mckean@databricks.com>"
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+backoff = "^2.2.0"
+databricks-agents = "^0.15.0"
+databricks-langchain = "*"
+databricks-sdk = "*"
+databricks-vectorsearch = "^0.44"
+docling = "^2.15.0"
+gradio = "^5.12"
+jupyter = "^1.1.1"
+langchain-community = "^0.3.14"
+langchain-core = "^0.3.29"
+langchain-openai = "^0.3"
+langgraph = "^0.2.63"
+mlflow = "^2.4.0"
+numpy = "^1.26.0"
+openai = "^1.35.0"
+pydantic = "^2.1.1"
+pyyaml = "^6.0.1"
+transformers = "^4.42"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
+black = "^24.1.0"
+flake8 = "^7.0.0"
+mypy = "^1.8.0"
+isort = "^5.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--cov=maud --cov-report=term-missing" 
