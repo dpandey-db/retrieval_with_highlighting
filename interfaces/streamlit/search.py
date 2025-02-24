@@ -9,17 +9,43 @@ from src.states import get_state
 from src.nodes import make_query_vector_database_node, make_context_generation_node
 import re
 
+from nltk.stem import PorterStemmer
 
-def highlight_text(text, query_terms):
-    """Highlight query terms in text using HTML mark tags."""
-    highlighted_text = text
-    for term in query_terms:
-        if term.strip():
-            # Make the pattern match word boundaries to avoid partial word matches
-            pattern = re.compile(f"\\b({re.escape(term)})\\b", re.IGNORECASE)
-            # Use <mark> for highlighting
-            highlighted_text = pattern.sub(r"<mark>\1</mark>", highlighted_text)
-    return highlighted_text
+stemmer = PorterStemmer()
+
+
+def simple_tokenize(text):
+    """Simple word tokenizer that splits on whitespace and preserves punctuation"""
+    return re.findall(r"\b\w+\b|[^\w\s]|\s+", text)
+
+
+def stem_words(text):
+    """Stem words using provided stemmer"""
+    words = simple_tokenize(text.lower())
+    return [stemmer.stem(word) for word in words if re.match(r"\b\w+\b", word)]
+
+
+def highlight_stemmed_text(text, query_terms):
+    """Highlight query terms in text using HTML mark tags, accounting for word stems."""
+    # Get stems of the query terms
+    stemmed_query_terms = set(stem_words(" ".join(query_terms)))
+
+    # Split the text into words while preserving spaces and punctuation
+    words = simple_tokenize(text)
+
+    # Process each word and rebuild the text
+    result = []
+    for word in words:
+        if re.match(r"\b\w+\b", word):  # If it's a word (not space/punctuation)
+            stemmed_word = stemmer.stem(word.lower())
+            if stemmed_word in stemmed_query_terms:
+                result.append(f"<mark>{word}</mark>")
+            else:
+                result.append(word)
+        else:
+            result.append(word)  # Preserve spaces and punctuation
+
+    return "".join(result)
 
 
 def setup_agent():
@@ -48,6 +74,7 @@ def setup_agent():
 
 
 def main():
+
     st.title("Document Query Assistant")
 
     # Initialize session state
@@ -70,7 +97,7 @@ def main():
             st.write("### AI Response")
             ai_response = result["messages"][-1]["content"]
             query_terms = query.lower().split()
-            highlighted_response = highlight_text(ai_response, query_terms)
+            highlighted_response = highlight_stemmed_text(ai_response, query_terms)
             # Enable HTML for mark tags
             st.markdown(highlighted_response, unsafe_allow_html=True)
 
@@ -85,7 +112,9 @@ def main():
             for doc in result.get("documents", []):
                 with st.expander(f"Document {doc.metadata.get('doc_id', 'Unknown')}"):
                     # Highlight query terms in the content
-                    highlighted_content = highlight_text(doc.page_content, query_terms)
+                    highlighted_content = highlight_stemmed_text(
+                        doc.page_content, query_terms
+                    )
 
                     # Display the highlighted content
                     st.markdown(highlighted_content, unsafe_allow_html=True)

@@ -4,7 +4,7 @@
 
 # COMMAND ----------
 
-!pip install -r requirements.txt --quiet
+%pip install -r requirements.txt --quiet
 %restart_python
 
 # COMMAND ----------
