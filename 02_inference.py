@@ -25,7 +25,7 @@ from src.config import parse_config
 import os
 
 root_dir = Path(os.getcwd())
-implementation_path = root_dir / "implementations" / "agents" / "langgraph"
+implementation_path = root_dir / "agents" / "langgraph"
 mlflow_config = mlflow.models.ModelConfig(
     development_config=implementation_path / "config.yaml"
 )
@@ -89,7 +89,7 @@ chain = app | RunnableLambda(graph_state_to_chat_type)
 
 input_example = {
     "messages": [
-        {"role": "human", "content": "What is the factor of safety for fabric straps?"}
+        {"role": "human", "content": "What is the regulation around building temporary encampments?"}
     ]
 }
 
@@ -110,7 +110,7 @@ mlflow.set_tracking_uri("databricks")
 mlflow.set_registry_uri("databricks-uc")
 
 # Setup experiment
-mlflow.set_experiment(f"/Users/{USERNAME}/multimodal-langgraph")
+mlflow.set_experiment(f"/Users/{USERNAME}/elaws")
 
 # Setup retriever schema
 mlflow.models.set_retriever_schema(
@@ -152,7 +152,7 @@ with mlflow.start_run():
         model_config=str(implementation_path / "config.yaml"),
         pip_requirements=packages,
         artifact_path="agent",
-        code_paths=["maud"],
+        code_paths=["src"],
         registered_model_name=sls_config.agent.uc_model_name,
         input_example=input_example,
         signature=signature,

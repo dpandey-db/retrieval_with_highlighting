@@ -4,8 +4,8 @@
 
 # COMMAND ----------
 
-%pip install -r requirements.txt --quiet
-%restart_python
+# MAGIC %pip install -r requirements.txt --quiet
+# MAGIC %restart_python
 
 # COMMAND ----------
 
@@ -15,8 +15,8 @@ sys.path.append('./src')
 # COMMAND ----------
 
 # UNITY CATALOG
-CATALOG = 'shm'
-SCHEMA = 'semantic_legislation_search'
+CATALOG = 'devanshu_pandey'
+SCHEMA = 'retriever_agent_demo'
 
 USERNAME = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
 

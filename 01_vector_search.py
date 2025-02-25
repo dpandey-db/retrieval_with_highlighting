@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # Featurize
 # MAGIC
-# MAGIC This notebook featurizes the vector search index
+# MAGIC This notebook featurizes the vector search index. We have manually downloaded sample data from our legislation.
 
 # COMMAND ----------
 
@@ -14,27 +14,12 @@ import pyspark.sql.functions as F
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Extract Metadata and Chunks
-# MAGIC Here we extract the metadata and chunks so that we have a single vector index
-
-# COMMAND ----------
-
-(
-    combined.write.mode("overwrite")
-    .options(mergeSchema=True)
-    .saveAsTable("shm.multimodal.combined_chunks")
-)
-display(combined)
-
-# COMMAND ----------
-
-display(spark.table("shm.multimodal.combined_chunks"))
+display(spark.table("devanshu_pandey.retriever_agent_demo.elaws_sample_data_chunked"))
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC ALTER TABLE shm.multimodal.combined_chunks
+# MAGIC ALTER TABLE devanshu_pandey.retriever_agent_demo.elaws_sample_data_chunked
 # MAGIC SET TBLPROPERTIES (delta.enableChangeDataFeed = true)
 
 # COMMAND ----------
