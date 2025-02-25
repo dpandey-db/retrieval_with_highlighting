@@ -25,9 +25,9 @@ from src.config import parse_config
 import os
 
 root_dir = Path(os.getcwd())
-implementation_path = root_dir / "agents" / "langgraph"
+implementation_path = root_dir / "agent"
 mlflow_config = mlflow.models.ModelConfig(
-    development_config=implementation_path / "config.yaml"
+    development_config = implementation_path / "config.yaml"
 )
 sls_config = parse_config(mlflow_config)
 

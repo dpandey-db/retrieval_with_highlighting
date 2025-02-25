@@ -27,9 +27,6 @@ BRONZE_PATH = 'docs_bronze'
 SILVER_PATH = 'docs_silver'
 GOLD_PATH = 'docs_gold'
 
-# CHUNK SETTINGS
-CHUNK_MAX_TOKENS = 250
-
 # COMMAND ----------
 
 import logging
