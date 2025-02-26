@@ -10,29 +10,41 @@
 # COMMAND ----------
 
 import sys
-sys.path.append('./src')
+
+sys.path.append("./src")
 
 # COMMAND ----------
 
 # UNITY CATALOG
-CATALOG = 'devanshu_pandey'
-SCHEMA = 'retriever_agent_demo'
+CATALOG = "devanshu_pandey"
+SCHEMA = "retriever_agent_demo"
 
-USERNAME = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
+USERNAME = (
+    dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
+)
 
-ROOT_PATH = "/".join(dbutils.notebook.entry_point.getDbutils().notebook().getContext().notebookPath().get().split('/')[:-1])
+ROOT_PATH = "/".join(
+    dbutils.notebook.entry_point.getDbutils()
+    .notebook()
+    .getContext()
+    .notebookPath()
+    .get()
+    .split("/")[:-1]
+)
 
 # PATH SETTINGS
-BRONZE_PATH = 'docs_bronze'
-SILVER_PATH = 'docs_silver'
-GOLD_PATH = 'docs_gold'
+BRONZE_PATH = "docs_bronze"
+SILVER_PATH = "docs_silver"
+GOLD_PATH = "docs_gold"
 
 # COMMAND ----------
 
 import logging
 
 # Configure logger
-logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.WARNING, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 log = logging.getLogger(__name__)
 
 # COMMAND ----------
@@ -40,6 +52,7 @@ log = logging.getLogger(__name__)
 # Ensure volumes are ready
 from databricks.sdk.service.catalog import VolumeType
 from databricks.sdk import WorkspaceClient
+
 w = WorkspaceClient()
 
 try:
@@ -48,20 +61,17 @@ except:
     log.info(f"{CATALOG} catalog exists")
 
 try:
-    w.schemas.create(
-    catalog_name=CATALOG,
-    name=SCHEMA        
-    )
+    w.schemas.create(catalog_name=CATALOG, name=SCHEMA)
 except:
     log.info(f"{SCHEMA} catalog exists")
 
 for volume_name in [BRONZE_PATH, SILVER_PATH, GOLD_PATH]:
     try:
         w.volumes.create(
-        catalog_name=CATALOG, 
-        schema_name=SCHEMA, 
-        name=volume_name,
-        volume_type=VolumeType.MANAGED
+            catalog_name=CATALOG,
+            schema_name=SCHEMA,
+            name=volume_name,
+            volume_type=VolumeType.MANAGED,
         )
     except:
         log.info(f"{volume_name} volume exists")
