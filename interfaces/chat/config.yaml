@@ -1,8 +1,5 @@
 # Application configuration
 title: Semantic Legislation Search
 description: Search for legislation using semantic search with highlighting
-examples:
-  - What regulations cover the transportation of hazardous materials?
-  - Can I ship cows using a commercial aircraft?
-  - Am I allowed to import GPUs from the US to help our data centers?
+example: What are the regulations around taxation for the sale of liquor?
 serving_endpoint: agents_devanshu_pandey-retriever_agent_demo-elaws_retriever

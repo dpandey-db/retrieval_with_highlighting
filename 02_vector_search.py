@@ -32,9 +32,9 @@ display(spark.table("devanshu_pandey.retriever_agent_demo.elaws_sample_data_chun
 
 from mlflow.models import ModelConfig
 from databricks.vector_search.client import VectorSearchClient
-from agent.retrievers import index_exists
+from src.retrievers import index_exists
 
-config = ModelConfig(development_config="agents/langgraph/config.yaml")
+config = ModelConfig(development_config="agents/search/config.yaml")
 vs_config = config.get("vector_search")
 vs_endpoint = vs_config.get("endpoint_name")
 vs_index_name = vs_config.get("index_name")

@@ -1,0 +1,23 @@
+agent:
+  streaming: False
+  experiment_location: /Users/scott.mckean/elaws
+  uc_model_name: devanshu_pandey.retriever_agent_demo.elaws_retriever
+model:
+  endpoint_name: databricks-meta-llama-3-3-70b-instruct
+  parameters:
+    temperature: 0
+    max_tokens: 400
+retriever:
+  endpoint_name: one-env-shared-endpoint-1
+  index_name: devanshu_pandey.retriever_agent_demo.vs_elaws_sample
+  embedding_model: databricks-bge-large-en
+  search_type: hybrid
+  score_threshold: 0
+  parameters:
+    k: 3
+    query_type: ann
+  mapping:
+    chunk_text: text
+    document_uri: doc_id
+    primary_key: id
+  chunk_template: 'Passage: {chunk_text}\n Document URI: {document_uri}\n'

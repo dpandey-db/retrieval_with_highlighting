@@ -7,7 +7,7 @@ import yaml
 class InterfaceConfig(BaseModel):
     title: str
     description: str
-    examples: List[str]
+    example: str
     serving_endpoint: str
 
 

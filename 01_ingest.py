@@ -45,4 +45,15 @@ for idx, row in df.iterrows():
 
 # COMMAND ----------
 
-pd.DataFrame(all_chunks)
+# Write to spark table
+from pyspark.sql.functions import monotonically_increasing_id
+
+chunks_df = pd.DataFrame(all_chunks)
+chunk_sp = spark.createDataFrame(chunks_df)
+chunk_sp = chunk_sp.withColumn("id", monotonically_increasing_id())
+(
+    chunk_sp.write.option("mergeSchema", "true")
+    .mode("overwrite")
+    .saveAsTable("shm.multimodal.processed_chunks")
+)
+display(chunk_sp)

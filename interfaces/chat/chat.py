@@ -55,7 +55,10 @@ def main():
     st.write(config.description)
 
     # Query input
-    query = st.text_input("Enter your query:")
+    query = st.text_input(
+        label="Enter your query:",
+        placeholder=config.example,
+    )
 
     endpoint_url = (
         f"{workspace_url}/serving-endpoints/{config.serving_endpoint}/invocations"
