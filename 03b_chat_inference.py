@@ -2,9 +2,9 @@
 # MAGIC %md
 # MAGIC # Inference
 # MAGIC
-# MAGIC This module bring everything together. We take our vector store and implementation code and deploy a serving endpoint that can be used for multimodal retrieval.
+# MAGIC This module bring everything together. We take our vector store and implementation code and deploy a serving endpoint that can be used for retrieval.
 # MAGIC
-# MAGIC This subsection (04a) implements the inference flow using LangGraph
+# MAGIC This subsection (03b) implements the full chat interface flow using LangGraph
 
 # COMMAND ----------
 
@@ -27,7 +27,7 @@ import os
 root_dir = Path(os.getcwd())
 implementation_path = root_dir / "agent"
 mlflow_config = mlflow.models.ModelConfig(
-    development_config = implementation_path / "config.yaml"
+    development_config=implementation_path / "config.yaml"
 )
 sls_config = parse_config(mlflow_config)
 
@@ -89,7 +89,10 @@ chain = app | RunnableLambda(graph_state_to_chat_type)
 
 input_example = {
     "messages": [
-        {"role": "human", "content": "What is the regulation around building temporary encampments?"}
+        {
+            "role": "human",
+            "content": "What is the regulation around building temporary encampments?",
+        }
     ]
 }
 

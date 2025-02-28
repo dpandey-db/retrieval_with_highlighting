@@ -61,15 +61,15 @@ def main():
     )
 
     endpoint_url = (
-        f"{workspace_url}/serving-endpoints/{config.serving_endpoint}/invocations"
+        f"{workspace_url}/api/2.0/vector-search/indexes/{config.vs_index_name}/query"
     )
 
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
     payload = {
-        "messages": [
-            {"role": "user", "content": query},
-        ]
+        "num_results": 5,
+        "columns": ["text", "doc_id"],
+        "query_text": "What is the regulation around building temporary encampments?",
     }
 
     if query:
@@ -80,34 +80,28 @@ def main():
                 response.raise_for_status()  # Raise an exception for bad status codes
                 result = response.json()
 
-                st.write("### Assistant")
-                ai_response = result["choices"][0]["message"]["content"]
+                st.write("### Retriever")
+                text_response = f"I've found {result['result']['row_count']} documents related to your query."
+                st.markdown(text_response, unsafe_allow_html=True)
+
+                st.write("### Retrieved Documents")
                 query_terms = query.lower().split()
-                highlighted_response = highlight_stemmed_text(ai_response, query_terms)
-                st.markdown(highlighted_response, unsafe_allow_html=True)
 
-                # Display retrieved documents
-                if "documents" in result["custom_outputs"]:
-                    st.write("### Retrieved Documents")
-                    query_terms = query.lower().split()
+                for doc in response.json()["result"].get("data_array", []):
+                    with st.expander(f"Document {doc[1]}"):
+                        highlighted_content = highlight_stemmed_text(
+                            doc[0], query_terms
+                        )
+                        st.markdown(highlighted_content, unsafe_allow_html=True)
 
-                    for doc in result["custom_outputs"].get("documents", []):
-                        metadata = doc.get("metadata", {})
-                        with st.expander(f"Document {metadata.get('doc_id', '')}"):
-                            highlighted_content = highlight_stemmed_text(
-                                doc["page_content"], query_terms
-                            )
-                            st.markdown(highlighted_content, unsafe_allow_html=True)
-
-                            # Display metadata
-                            st.markdown("**Metadata:**")
-                            st.json(doc.get("metadata", {}))
-
-                            # Add document link if doc_id exists
-                            if "doc_id" in doc:
-                                st.markdown(
-                                    f"[View Original Document](document/{metadata.get("url","")})"
-                                )
+                        # Display metadata
+                        st.markdown("**Metadata:**")
+                        st.json(
+                            {
+                                "doc_id": doc[1],
+                                "relevance": doc[2],
+                            }
+                        )
 
             except requests.exceptions.RequestException as e:
                 st.error(f"Error making request: {str(e)}")

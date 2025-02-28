@@ -9,6 +9,7 @@ class InterfaceConfig(BaseModel):
     description: str
     example: str
     serving_endpoint: str
+    vs_index_name: str
 
 
 def load_interface_config(config_path: str | Path) -> InterfaceConfig:

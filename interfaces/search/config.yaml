@@ -3,3 +3,4 @@ title: Semantic Legislation Search
 description: Search for legislation using semantic search with highlighting
 example: What are the regulations around taxation for the sale of liquor?
 serving_endpoint: agents_devanshu_pandey-retriever_agent_demo-elaws_retriever
+vs_index_name: devanshu_pandey.retriever_agent_demo.vs_elaws_sample

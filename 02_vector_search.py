@@ -34,7 +34,7 @@ from mlflow.models import ModelConfig
 from databricks.vector_search.client import VectorSearchClient
 from src.retrievers import index_exists
 
-config = ModelConfig(development_config="agents/search/config.yaml")
+config = ModelConfig(development_config="agents/chat/config.yaml")
 vs_config = config.get("vector_search")
 vs_endpoint = vs_config.get("endpoint_name")
 vs_index_name = vs_config.get("index_name")
