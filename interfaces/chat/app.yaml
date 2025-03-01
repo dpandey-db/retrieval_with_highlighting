@@ -1,0 +1,5 @@
+command: ["python", "chat.py"]
+
+env:
+  - name: "ENVIRONMENT_VARIABLE"
+    valueFrom: "serving-endpoint"

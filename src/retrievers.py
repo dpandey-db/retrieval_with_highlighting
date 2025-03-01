@@ -21,6 +21,29 @@ def get_vector_retriever(config: SLSConfig) -> VectorStoreRetriever:
     return retriever
 
 
+def make_text_chunk(chunk, doc_uri):
+    pages = [[x.page_no for x in x.prov] for x in chunk.meta.doc_items]
+    unique_pages = list(set([page for sublist in pages for page in sublist]))
+    unique_pages.sort()
+    doc_refs = [x.self_ref for x in chunk.meta.doc_items]
+    headings = chunk.meta.headings
+    captions = chunk.meta.captions
+
+    return {
+        "doc_uri": doc_uri,
+        "pages": unique_pages,
+        "doc_refs": doc_refs,
+        "headings": headings,
+        "captions": captions,
+        "text": chunk.text,
+        "enriched_text": f"""
+            Headings:{", ".join(headings) if headings else ""}\n
+            Captions:{", ".join(captions) if captions else ""}\n
+            Text:{chunk.text}
+        """,
+    }
+
+
 def format_documents(config: SLSConfig, docs):
     chunk_template = config.retriever.chunk_template
     chunk_contents = [

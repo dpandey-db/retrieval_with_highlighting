@@ -33,11 +33,11 @@ Each solution component is implemented as a Databricks notebook.
 
 1. Ingestion: Ingest the documents from a source and parse them in volumes and delta tables.
 
-2. Featurization: Feature engineer the raw documents into chunks and metadata that are useful for search and retrieval.
+2. Vector Search: Prepare the raw documents into chunks and metadata that are useful for retrieval.
 
-3. Inference: Use a foundation model and agent framework to search and extract information from the documents.
+3. Inference: Use a foundation model and agent framework to summarize documents.
 
-4. Interface: Provide a basic user interface for interacting with the agent and gathering feedback.
+4. Interface: Use a basic user interface to interact with the agent.
 
 ## Authors
 <devanshu.pandey@databricks.com>

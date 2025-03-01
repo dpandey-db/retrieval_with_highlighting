@@ -29,7 +29,7 @@ class RetrieverMapping(ConfigModel):
     chunk_text: str
     document_uri: str
     primary_key: str
-    other_columns: List[str]
+    other_columns: List[str] = []
 
     @property
     def all_columns(self) -> List[str]:

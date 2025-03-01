@@ -94,6 +94,25 @@ def create_flexible_chat_completion_response(
     )
 
 
+def retriever_to_chat_type(state: StateGraph):
+    """
+    Bare bones retriever formatting to chat type
+    chain = compile_graph | RunnableLambda(retriever_to_chat_type)
+    """
+    message = f"Retrieved {len(state['documents'])} documents"
+    documents = [x.model_dump() for x in state["documents"]]
+    return asdict(
+        ChatCompletionResponse(
+            choices=[
+                ChatChoice(message=ChatMessage(role="assistant", content=message))
+            ],
+            custom_outputs={
+                "documents": documents,
+            },
+        )
+    )
+
+
 def convert_to_chat_request(
     messages: List[Dict[str, setattr]]
 ) -> ChatCompletionRequest:

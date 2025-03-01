@@ -1,0 +1,9 @@
+command: [
+    "python",
+    "search
+    .py",
+  ]
+
+env:
+  - name: "ENVIRONMENT_VARIABLE"
+    valueFrom: "serving-endpoint"
